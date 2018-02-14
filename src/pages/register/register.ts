@@ -47,7 +47,7 @@ export class RegisterPage {
         .subscribe(user => {
 
           localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
-          this.navCtrl.push(this.imgListPage);
+          this.navCtrl.setRoot(this.imgListPage);
         });
       },
       (error: HttpErrorResponse) => console.log(error.error.message));

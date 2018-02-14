@@ -1,3 +1,5 @@
+import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { LogoutPage } from './../pages/logout/logout';
 import { ThumbnailPipe } from './../pipes/thumbnail/thumbnail';
 import { ImgModalComponent } from './../components/img-modal/img-modal';
 import { ImageBoxComponent } from './../components/image-box/image-box';
@@ -25,6 +27,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     RegisterPage,
     ImgListPage,
+    LogoutPage,
     ImageBoxComponent,
     ImgModalComponent,
     ThumbnailPipe
@@ -43,6 +46,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     RegisterPage,
     ImgListPage,
+    LogoutPage,
     ImageBoxComponent,
     ImgModalComponent
   ],

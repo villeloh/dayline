@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { UserProvider } from './../../providers/UserProvider';
 import { User } from './../../models/User';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -16,7 +16,9 @@ export class LoginPage {
   user: User = new User();
   imgListPage: Page = ImgListPage;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public userProvider: UserProvider) {
   }
 
   ionViewDidLoad() {
@@ -34,7 +36,7 @@ export class LoginPage {
       .subscribe(user => {
 
         localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
-        this.navCtrl.push(this.imgListPage);
+        this.navCtrl.setRoot(this.imgListPage);
       });
     },
     (error: HttpErrorResponse) => console.log(error.error.message));

@@ -1,10 +1,10 @@
 
 <div class="containerDiv">
-  <button class="closeButton" ion-button large (click)="delete(dlImage); closeModal()">
-    <ion-icon id="close-icon" name="close-circle"></ion-icon>
+  <button class="closeButton" ion-button (click)="delete(dlImage); closeModal()">
+    <ion-icon id="delete-icon" name="trash"></ion-icon>
   </button>
-  <div class="modalImgDiv">
-    <img [name]="file_id" [src]="filename" (click)="closeModal()"/>
+  <div class="modalImgDiv" (click)="closeModal()">
+    <img [name]="file_id" [src]="filename | thumbnail:'normal'"/>
   </div>
   <hr>
   <p class="imageModalDesc">{{ description }}</p>

@@ -35,6 +35,6 @@ export class HomePage {
 
   goToPage(page: Page) {
 
-    this.navCtrl.push(page);
+    this.navCtrl.setRoot(page);
   }
 } // end class

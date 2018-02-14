@@ -1,3 +1,4 @@
+import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ImgProvider } from './../../providers/ImgProvider';
 import { DlImage } from './../../models/DlImage';
@@ -18,7 +19,7 @@ import { ViewController } from 'ionic-angular/navigation/view-controller';
 })
 export class ImgModalComponent {
 
-  filename: string; // 'src' for the image in the modal
+  filename: string; // 'src' attribute value for the image in the modal
   file_id: number;
   description: string;
   dlImage: DlImage;
