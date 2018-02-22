@@ -1,16 +1,16 @@
+import { UserProvider } from './../providers/UserProvider';
 import { RegisterPage } from './../pages/register/register';
 import { LoginPage } from './../pages/login/login';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { LogoutPage } from '../pages/logout/logout';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 /**
- * This class actually controls the sidemenu, but renaming it now might cause some unneeded mayhem.
+ * This class mainly controls the sidemenu, but renaming it now might cause some unneeded mayhem.
  */
 
 @Component({
@@ -28,28 +28,21 @@ export class MyApp {
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen) {
+    public splashScreen: SplashScreen,
+    public userProvider: UserProvider,
+    public events: Events) {
 
     this.initializeApp();
 
     // this.viewCtrl.showBackButton(false); // doesn't work for some reason...
 
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
+    this.pages = [];
 
-    const id = localStorage.getItem('user_id');
+    this.events.subscribe('loggedIn', value => {
 
-    if ( id !== null && id !== undefined ) {
+      this.setMenuItems(value);
+    });
 
-      this.pages.push({ title: 'Logout', component: LogoutPage });
-    } else {
-
-      this.pages.push({ title: 'Login', component: LoginPage });
-      this.pages.push({ title: 'Register', component: RegisterPage });
-    }
   } // end constructor()
 
   initializeApp() {
@@ -69,4 +62,19 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
-}
+
+  // called whenever user state changes (event emitted on login/logout)
+  setMenuItems(userLoggedIn: boolean) {
+
+    if (userLoggedIn === true) {
+
+      this.pages.length = 0;
+      this.pages.push({ title: 'Logout', component: LogoutPage });
+    } else {
+
+      this.pages.length = 0;
+      this.pages.push({ title: 'Login', component: LoginPage });
+      this.pages.push({ title: 'Register', component: RegisterPage });
+    }
+  } // end setMenuItems()
+} // end class

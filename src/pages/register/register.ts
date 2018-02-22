@@ -3,7 +3,7 @@ import { ImgListPage } from './../img-list/img-list';
 import { UserProvider } from './../../providers/UserProvider';
 import { User } from './../../models/User';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 
 /**
@@ -23,7 +23,11 @@ export class RegisterPage {
   user: User = new User();
   imgListPage: Page = ImgListPage;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public userProvider: UserProvider,
+    public events: Events) {
   }
 
   ionViewDidLoad() {
@@ -48,6 +52,7 @@ export class RegisterPage {
 
           localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
           this.navCtrl.setRoot(this.imgListPage);
+          this.events.publish('loggedIn', true); // duplicate code with login.ts; fragile! ... not sure how to combine them atm
         });
       },
       (error: HttpErrorResponse) => console.log(error.error.message));

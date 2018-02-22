@@ -4,7 +4,7 @@ import { UserProvider } from './../../providers/UserProvider';
 import { LoginPage } from './../login/login';
 import { RegisterPage } from './../register/register';
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Events } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
 @Component({
@@ -17,7 +17,10 @@ export class HomePage {
   registerPage: any = RegisterPage;
   imgListPage: any = ImgListPage;
 
-  constructor(public navCtrl: NavController, public userProvider: UserProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public userProvider: UserProvider,
+    public events: Events) {
   }
 
   ionViewDidLoad() {
@@ -27,10 +30,13 @@ export class HomePage {
 
       localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
       this.goToPage(this.imgListPage); // if there is a valid token, go directly to imgListPage
+      this.events.publish('loggedIn', true);
     },
-    (error: HttpErrorResponse) =>
+    (error: HttpErrorResponse) => {
 
-      console.log(error.error.message));
+      console.log(error.error.message);
+      this.events.publish('loggedIn', false);
+    });
   } // end ionViewDidLoad()
 
   goToPage(page: Page) {

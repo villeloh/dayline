@@ -32,12 +32,13 @@ export class ImgModalComponent {
     this.description = this.dlImage.description;
   }
 
+  // maybe send back a blurb text; 'you deleted image_x!'?
   closeModal(info?: any) {
 
     this.viewCtrl.dismiss(info);
   }
 
-  // called upon clicking a cross in the corner of the image
+  // called upon clicking a trashcan icon in the corner of the image
   delete(img: DlImage) {
 
     const id: number = img.file_id;

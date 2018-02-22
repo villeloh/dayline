@@ -45,7 +45,11 @@ export class UserProvider {
 
   }
 
-  deleteUser() {}
+  deleteUser() {
+
+
+
+  }
 
   getUserInfo() {
 

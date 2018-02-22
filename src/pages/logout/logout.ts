@@ -1,7 +1,7 @@
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { HomePage } from './../home/home';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,10 @@ export class LogoutPage {
 
   homePage: Page = HomePage;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public events: Events) {
   }
 
   ionViewDidLoad() {
@@ -22,6 +25,7 @@ export class LogoutPage {
     localStorage.removeItem('token');
     localStorage.removeItem('user_id');
     this.navCtrl.push(this.homePage);
+    this.events.publish('loggedIn', false);
   }
 
 }

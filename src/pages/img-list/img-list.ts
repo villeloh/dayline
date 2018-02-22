@@ -32,7 +32,7 @@ export class ImgListPage {
 
   ionViewDidLoad() {
 
-    // TODO: implement caching so that the list is not fetched every time when re-entering the page
+    // TODO: implement caching so that the list is not re-fetched every time when re-entering the page
     this.imageList = [];
     this.buildImageList();
   }
