@@ -35,9 +35,21 @@ export class ImgProvider {
     };
 
     return this.http.post(url, formData, options);
+    // response contains: 'message'(string), 'file_id'(number)
   } // end uploadImage()
 
-  updateImage() {}
+  updateImage(imgId: number, desc: string) {
+
+    const url = this.baseApiUrl + 'media/' + imgId;
+
+    const options = {
+      headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
+    };
+
+    const request = { "description": desc };
+
+    return this.http.put(url, request, options);
+  } // end updateImage()
 
   deleteImage(imgId: number) {
 

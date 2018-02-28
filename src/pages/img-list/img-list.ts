@@ -1,9 +1,10 @@
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { ImageBoxComponent } from './../../components/image-box/image-box';
 import { DlImage } from './../../models/DlImage';
 import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 import { ImgModalComponent } from '../../components/img-modal/img-modal';
@@ -14,6 +15,9 @@ import { ImgModalComponent } from '../../components/img-modal/img-modal';
   templateUrl: 'img-list.html',
 })
 export class ImgListPage {
+
+  // not sure if this is correct...
+  @ViewChild('imgHolder') imgHolder: any;
 
   imageList: DlImage[];
   baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
@@ -69,6 +73,9 @@ export class ImgListPage {
     .subscribe(res => {
 
       console.log('Upload response: ' + JSON.stringify(res));
+      // TODO: make this work by affixing the single uploaded img to the ViewChild element
+      // that's declared above. it's tricky to do because this response only contains the file_id...
+      // needs another subscribe() I guess. not sure if it's enough benefit to bother tbh
 
       const delay = 2000; // unworkable... it loads it alright, but this takes *way* too long!
 

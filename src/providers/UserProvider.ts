@@ -15,12 +15,21 @@ export class UserProvider {
 
   baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
 
+  // default options to use in requests... not sure if it's needed
   options = {
     headers: new HttpHeaders().set('Content-Type', 'application/json')
   };
 
   constructor(public http: HttpClient) {
   }
+
+  userNameFree(userName: string) {
+
+    const url = this.baseApiUrl + 'users/username/' + userName;
+
+    return this.http.get(url, this.options);
+    // response contains: 'username', 'available'(boolean)
+  } // end userNameFree()
 
   registerUser(user: User) {
 
@@ -37,23 +46,33 @@ export class UserProvider {
     return this.http.post(url, body, this.options);
   } // end loginUser()
 
-  updateUser() {
+  updateUser(stat: string, newValue: string) {
 
-  }
+    const url = this.baseApiUrl + 'users';
+    const token = localStorage.getItem('token'); // to avoid duplicate code, this should be provided to all these methods somehow
 
+    const options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
+    };
+
+    const request = { stat: newValue };
+    // possible stats: 'username', 'password', 'email'
+
+    return this.http.put(url, request, options);
+  } // end updateUser()
+
+  // this is implemented elsewhere atm... preserving this stub to remind me that it should be moved here
   logoutUser() {
 
   }
 
+  // apparently this can't be done atm because we lack admin rights
   deleteUser() {
-
-
-
   }
 
   getUserInfo() {
 
-    const token = localStorage.getItem('token') || ''; // non-ideal; should return 'empty' Observable if no token!
+    const token = localStorage.getItem('token') || ''; // non-ideal; should return 'empty' Observable if no token exists!
 
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)

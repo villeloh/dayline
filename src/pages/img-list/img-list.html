@@ -16,7 +16,7 @@
     <input type="submit" value="Upload">
   </form>
 
-  <ion-list>
+  <ion-list #imgHolder>
       <ion-item *ngFor = "let dlImage of this.imageList">
         <image-box (click)="presentModal(dlImage)" [img] = "dlImage"></image-box>
       </ion-item>

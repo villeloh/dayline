@@ -35,29 +35,43 @@ export class RegisterPage {
 
   register(user: User) {
 
-    // three subscribes is a bit much... TODO: clear this up somehow -.-
+    // four subscribes is a 'bit' much... TODO: clear this up somehow -.-
     // logging in the user gets the token, which is needed for getting id,
     // so the mess seems unavoidable...
-    this.userProvider.registerUser(user)
+
+    this.userProvider.userNameFree(user.username)
     .subscribe(res => {
 
-      console.log('Register response: ' + JSON.stringify(res));
-      this.userProvider.loginUser(user)
-      .subscribe(res => {
+      const userNameAvailable = res['available'];
 
-        localStorage.setItem('token', res['token']);
+      if (!userNameAvailable) {
 
-        this.userProvider.getUserInfo()
-        .subscribe(user => {
+        // TODO: send alert about failure to the user...
 
-          localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
-          this.navCtrl.setRoot(this.imgListPage);
-          this.events.publish('loggedIn', true); // duplicate code with login.ts; fragile! ... not sure how to combine them atm
-        });
-      },
-      (error: HttpErrorResponse) => console.log(error.error.message));
-    }
-    ,
-    (error: HttpErrorResponse) => console.log(error.error.message));
+      } else {
+
+        this.userProvider.registerUser(user)
+        .subscribe(res => {
+
+          console.log('Register response: ' + JSON.stringify(res));
+          this.userProvider.loginUser(user)
+          .subscribe(res => {
+
+            localStorage.setItem('token', res['token']);
+
+            this.userProvider.getUserInfo()
+            .subscribe(user => {
+
+              localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
+              this.navCtrl.setRoot(this.imgListPage);
+              this.events.publish('loggedIn', true); // duplicate code with login.ts; fragile! ... not sure how to combine them atm
+            });
+          },
+          (error: HttpErrorResponse) => console.log("error registering: " + error.error.message));
+        }
+        ,
+        (error: HttpErrorResponse) => console.log("outer error registering: " + error.error.message)); // end register-subscribe()
+      } // end if-else
+    }); // end outer subscribe()
   } // end register()
 } // end class
