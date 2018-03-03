@@ -8,11 +8,15 @@
 </ion-header>
 
 <ion-content padding>
-  <form class="loginForm" (submit)="login(this.user)">
-    <input class="loginInput" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField">
-    <br>
-    <input class="loginInput" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField">
-    <br>
+  <form novalidate #loginFormId [formGroup] = "loginFormGroup" class="loginForm" (submit)="login(this.user)">
+    <ion-item>
+      <ion-label floating>Username</ion-label>
+      <ion-input formControlName="userName" class="loginInput" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input formControlName="passWord" class="loginInput" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
+    </ion-item>
     <button class="loginSubmit" ion-button type="submit">Login</button>
   </form>
 </ion-content>

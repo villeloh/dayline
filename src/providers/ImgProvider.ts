@@ -15,7 +15,7 @@ export class ImgProvider {
 
   getImagesByUserId(id: number) {
 
-    const token = localStorage.getItem('token'); // will only be called when the user is logged in
+    const token = localStorage.getItem('token'); // will only be called when the user is logged in, so no check is needed
 
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
@@ -35,7 +35,7 @@ export class ImgProvider {
     };
 
     return this.http.post(url, formData, options);
-    // response contains: 'message'(string), 'file_id'(number)
+    // response contains: 'message': string, 'file_id': number
   } // end uploadImage()
 
   updateImage(imgId: number, desc: string) {

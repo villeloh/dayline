@@ -1,3 +1,4 @@
+import { Utils } from './../../utils/Utils';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { ImageBoxComponent } from './../../components/image-box/image-box';
@@ -23,7 +24,7 @@ export class ImgListPage {
   baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
 
   file: File;
-  title: string;
+  lastUploadDate: Date;
   description: string;
 
   constructor(
@@ -37,6 +38,7 @@ export class ImgListPage {
   ionViewDidLoad() {
 
     // TODO: implement caching so that the list is not re-fetched every time when re-entering the page
+
     this.imageList = [];
     this.buildImageList();
   }
@@ -46,45 +48,65 @@ export class ImgListPage {
     let dlImg;
 
     const userId = Number(localStorage.getItem('user_id')) || 0; // should exist since we came here from login / register
-    console.log("id: " + userId);
+    console.log("user_id: " + userId);
 
     this.imgProvider.getImagesByUserId(userId)
     .subscribe(imgs => {
 
-      for (let i = 0; i < imgs.length; i++) {
+      if (imgs.length !== 0) {
 
-        dlImg = new DlImage(imgs[i]['title'], imgs[i]['filename'], imgs[i]['description'], imgs[i]['time_added'],
-        imgs[i]['user_id'], imgs[i]['file_id'], imgs[i]['thumbnails']);
-        this.imageList[i] = dlImg;
+        // I'm using the title field to store the upload date... it's non-ideal, but fast & easy
+        this.lastUploadDate = new Date(imgs[imgs.length-1]['title']);
+        console.log('last upload date: ' + imgs[imgs.length-1]['title']);
+
+        // to make the newer images appear on top, we must add the images in reverse order
+        let j = 0;
+
+        for (let i = imgs.length - 1; i >= 0; i--, j++) {
+
+          dlImg = new DlImage(imgs[j]['title'], imgs[j]['filename'], imgs[j]['description'], imgs[j]['time_added'],
+          imgs[j]['user_id'], imgs[j]['file_id'], imgs[j]['thumbnails']);
+          this.imageList[i] = dlImg;
+        }
       }
     }); // end subscribe()
   } // end buildImageList()
 
   upload() {
 
-    const storedThis = this; // store a 'this' reference for use in the setTimeOut()
+    const formattedDateStr = Utils.formattedDateStr();
+    console.log('formattedDateStr: ' + formattedDateStr);
+    const uploadDate = new Date(formattedDateStr);
 
-    const formData: FormData = new FormData();
-    formData.append('file', this.file);
-    formData.append('title', this.title);
-    formData.append('description', this.description);
+    if (uploadDate >= this.lastUploadDate) {
 
-    this.imgProvider.uploadImage(formData)
-    .subscribe(res => {
+      // TODO: display an alert about invalid upload date
+    } else {
 
-      console.log('Upload response: ' + JSON.stringify(res));
-      // TODO: make this work by affixing the single uploaded img to the ViewChild element
-      // that's declared above. it's tricky to do because this response only contains the file_id...
-      // needs another subscribe() I guess. not sure if it's enough benefit to bother tbh
+      const storedThis = this; // store a 'this' reference for use in the setTimeOut()
 
-      const delay = 2000; // unworkable... it loads it alright, but this takes *way* too long!
+      const formData: FormData = new FormData();
+      formData.append('file', this.file);
+      formData.append('title', formattedDateStr);
+      formData.append('description', this.description);
 
-      setTimeout(function() {
+      this.imgProvider.uploadImage(formData)
+      .subscribe(res => {
 
-        storedThis.buildImageList(); // inefficient... should just add it to the page. caching etc is needed as well...
-      }, delay);
-    },
-    (error: HttpErrorResponse) => console.log(error.error.message));
+        console.log('Upload response: ' + JSON.stringify(res));
+        // TODO: make this work by affixing the single uploaded img to the ViewChild element
+        // that's declared above. it's tricky to do because this response only contains the file_id...
+        // needs another subscribe() I guess. not sure if it's enough benefit to bother tbh
+
+        const delay = 2000; // unworkable... it loads it alright, but this takes *way* too long!
+
+        setTimeout(function() {
+
+          storedThis.buildImageList(); // inefficient... should just add it to the page. caching etc is needed as well...
+        }, delay);
+      },
+      (error: HttpErrorResponse) => console.log(error.error.message));
+    } // end if-else
   } // end upload()
 
   getFile(event: any) {

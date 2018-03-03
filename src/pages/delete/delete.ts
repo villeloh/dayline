@@ -5,6 +5,8 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
  * Page for deleting a user. It could've been a modal as well, but
  * to preseve uniform functionality with the other menu buttons,
  * I made it into a page instead.
+ *
+ *  EDIT: I guess deleting users is impossible... preserving this class for now just in case it can be done.
  */
 
 @IonicPage()
@@ -30,7 +32,7 @@ export class DeletePage {
 
     let alert = this.alertCtrl.create({
       title: 'Delete User',
-      message: 'Are you sure you want to delete your user?',
+      message: 'Are you sure you want to delete this image?',
       buttons: [
         {
           text: 'No',
@@ -48,7 +50,5 @@ export class DeletePage {
       ]
     });
     alert.present();
-
   } // end deleteUserAlert()
-
 } // end class
