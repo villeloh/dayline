@@ -12,17 +12,21 @@ export class Utils {
     let day = date.getUTCDate();
     let month = 1 + date.getUTCMonth(); // add 1 since months start from 0
     const year = date.getFullYear();
+    let stringMonth: string;
+    let stringDay: string; // these variables are needed because TypeScript doesn't like randomly casting numbers to strings -.-
 
-    // the complaint about implicitly casting number to string is ugly, but this is by far the least
-    // complicated way to achieve what I'm trying to do here, so, meh.
     if (month < 10) {
-      month = '0'+month;
+      stringMonth = '0'+month;
+    } else {
+      stringMonth = month.toString();
     }
 
     if (day < 10) {
-      day = '0'+day;
+      stringDay = '0'+day;
+    } else {
+      stringDay = day.toString();
     }
 
-    return year + '-' + month + '-' + day; // should add 'Z' to make it UTC time... but it stops working if I do that!
+    return year + '-' + stringMonth + '-' + stringDay; // should add 'Z' to make it UTC time... but it stops working if I do that!
   } // end formattedDateStr()
 } // end class

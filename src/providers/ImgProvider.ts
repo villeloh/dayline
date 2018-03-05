@@ -17,12 +17,25 @@ export class ImgProvider {
 
     const token = localStorage.getItem('token'); // will only be called when the user is logged in, so no check is needed
 
+    const url = this.baseApiUrl + 'media/user/' + id;
+
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
     };
 
-    return this.http.get<object[]>(this.baseApiUrl + 'media/user/' + id, options);
+    return this.http.get<object[]>(url, options);
   } // end getImagesByUserId()
+
+  getImageByImageId(id: number) {
+
+    const url = this.baseApiUrl + 'media/' + id;
+
+    const options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    };
+
+    return this.http.get<object>(url, options);
+  } // end getImageByImageId()
 
   uploadImage(formData: FormData) {
 

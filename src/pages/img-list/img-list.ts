@@ -94,16 +94,22 @@ export class ImgListPage {
       .subscribe(res => {
 
         console.log('Upload response: ' + JSON.stringify(res));
-        // TODO: make this work by affixing the single uploaded img to the ViewChild element
-        // that's declared above. it's tricky to do because this response only contains the file_id...
-        // needs another subscribe() I guess. not sure if it's enough benefit to bother tbh
 
-        const delay = 2000; // unworkable... it loads it alright, but this takes *way* too long!
+        this.imgProvider.getImageByImageId(res['file_id'])
+        .subscribe(img => {
 
-        setTimeout(function() {
+          console.log('image added at time: ' + img['time_added']);
 
-          storedThis.buildImageList(); // inefficient... should just add it to the page. caching etc is needed as well...
-        }, delay);
+          const dlImg = new DlImage(img['title'], img['filename'], img['description'], img['time_added'],
+          img['user_id'], img['file_id'], img['thumbnails']);
+
+          const delay = 150; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
+
+          setTimeout(function() {
+
+            storedThis.imageList.unshift(dlImg); // add it as the first element of the array
+          }, delay);
+        });
       },
       (error: HttpErrorResponse) => console.log(error.error.message));
     } // end if-else
