@@ -113,6 +113,7 @@ export class ImgListPage {
       },
       (error: HttpErrorResponse) => console.log(error.error.message));
     } // end if-else
+
   } // end upload()
 
   getFile(event: any) {
