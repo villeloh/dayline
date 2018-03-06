@@ -5,7 +5,7 @@ import { ImageBoxComponent } from './../../components/image-box/image-box';
 import { DlImage } from './../../models/DlImage';
 import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Renderer } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 import { ImgModalComponent } from '../../components/img-modal/img-modal';
@@ -19,6 +19,7 @@ export class ImgListPage {
 
   // not sure if this is correct...
   @ViewChild('imgHolder') imgHolder: any;
+  @ViewChild('fileInputField') fileInputField: any;
 
   imageList: DlImage[];
   baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
@@ -32,7 +33,8 @@ export class ImgListPage {
     public navParams: NavParams,
     public modalCtrl: ModalController,
     public imgProvider: ImgProvider,
-    public userProvider: UserProvider) {
+    public userProvider: UserProvider,
+    private renderer: Renderer) {
   }
 
   ionViewDidLoad() {
@@ -77,8 +79,16 @@ export class ImgListPage {
     const formattedDateStr = Utils.formattedDateStr();
     console.log('formattedDateStr: ' + formattedDateStr);
     const uploadDate = new Date(formattedDateStr);
+    let proceed: boolean;
 
-    if (uploadDate >= this.lastUploadDate) {
+    if (this.lastUploadDate !== undefined && this.lastUploadDate !== null) {
+
+      proceed = uploadDate.getTime() > this.lastUploadDate.getTime();
+    } else {
+      proceed = true; // no images on the list
+    }
+
+    if (!proceed) {
 
       // TODO: display an alert about invalid upload date
     } else {
@@ -104,10 +114,13 @@ export class ImgListPage {
           img['user_id'], img['file_id'], img['thumbnails']);
 
           const delay = 150; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
+          // NOTE: the delay would ideally depend on the size of the image / length of the upload process
 
           setTimeout(function() {
 
             storedThis.imageList.unshift(dlImg); // add it as the first element of the array
+            this.lastUploadDate = new Date(dlImg.title); // update the upload date (so we can't add a new image on the same day)
+            // NOTE: this should be done differently somehow... Observe the list and do this whenever it changes?
           }, delay);
         });
       },
@@ -126,4 +139,15 @@ export class ImgListPage {
     let imgModal = this.modalCtrl.create(ImgModalComponent, { dlImage: dlImage });
     imgModal.present();
   }
+
+  // workaround that I found online for styling the 'Browse' button
+  browse(event: Event): void {
+
+    // trigger click event of hidden 'Browse' button
+    let clickEvent: MouseEvent = new MouseEvent("click", {bubbles: true});
+    this.renderer.invokeElementMethod(
+
+      this.fileInputField.nativeElement, "dispatchEvent", [clickEvent]);
+  } // end browse()
+
 } // end class
