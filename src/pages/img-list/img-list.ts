@@ -17,7 +17,6 @@ import { ImgModalComponent } from '../../components/img-modal/img-modal';
 })
 export class ImgListPage {
 
-  // not sure if this is correct...
   @ViewChild('imgHolder') imgHolder: any;
   @ViewChild('fileInputField') fileInputField: any;
 
@@ -81,9 +80,12 @@ export class ImgListPage {
     const uploadDate = new Date(formattedDateStr);
     let proceed: boolean;
 
+    console.log('this.lastUploadDate: ' + this.lastUploadDate);
+
     if (this.lastUploadDate !== undefined && this.lastUploadDate !== null) {
 
       proceed = uploadDate.getTime() > this.lastUploadDate.getTime();
+      console.log('proceed when images exist: ' + proceed);
     } else {
       proceed = true; // no images on the list
     }
@@ -119,7 +121,8 @@ export class ImgListPage {
           setTimeout(function() {
 
             storedThis.imageList.unshift(dlImg); // add it as the first element of the array
-            this.lastUploadDate = new Date(dlImg.title); // update the upload date (so we can't add a new image on the same day)
+            storedThis.lastUploadDate = new Date(dlImg.title); // update the upload date (so we can't add a new image on the same day)
+            console.log('inner lastUploadDate: ' + storedThis.lastUploadDate);
             // NOTE: this should be done differently somehow... Observe the list and do this whenever it changes?
           }, delay);
         });

@@ -1,3 +1,4 @@
+import { Utils } from './../utils/Utils';
 import { ImgListPage } from './../pages/img-list/img-list';
 import { NavController } from 'ionic-angular';
 import { User } from './../models/User';
@@ -13,7 +14,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/respon
 @Injectable()
 export class UserProvider {
 
-  baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
+  baseApiUrl = Utils.BASE_API_URL;
 
   // default options to use in requests... not sure if it's needed
   options = {

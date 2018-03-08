@@ -1,10 +1,11 @@
+import { Utils } from './../../utils/Utils';
 import { ImgListPage } from './../img-list/img-list';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { UserProvider } from './../../providers/UserProvider';
 import { LoginPage } from './../login/login';
 import { RegisterPage } from './../register/register';
 import { Component } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import { NavController, Events, ToastController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
 @Component({
@@ -20,7 +21,8 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public userProvider: UserProvider,
-    public events: Events) {
+    public events: Events,
+    public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -35,7 +37,8 @@ export class HomePage {
     (error: HttpErrorResponse) => {
 
       console.log(error.error.message);
-      this.events.publish('loggedIn', false);
+      this.events.publish('loggedIn', false); // used to set the sidemenu items correctly
+      Utils.toast(this.toastCtrl, Utils.WELCOME_MSG);
     });
   } // end ionViewDidLoad()
 

@@ -1,3 +1,4 @@
+import { Utils } from './../utils/Utils';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -8,7 +9,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ImgProvider {
 
-  baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
+  baseApiUrl = Utils.BASE_API_URL;
 
   constructor(public http: HttpClient) {
   }
