@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Modify User</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form novalidate #modifyUserFormId [formGroup] = "modifyUserFormGroup" class="modifyUserForm" (submit)="login(this.user)">
+    <ion-item>
+      <ion-label floating>Username</ion-label>
+      <ion-input formControlName="userName" class="loginInput" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input formControlName="passWord" class="loginInput" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
+    </ion-item>
+    <button class="loginSubmit" ion-button type="submit">Login</button>
+  </form>
+</ion-content>
+

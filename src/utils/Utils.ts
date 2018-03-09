@@ -1,5 +1,6 @@
 import { AlertController } from "ionic-angular/components/alert/alert-controller";
 import { ToastController } from 'ionic-angular';
+import { Validators } from "@angular/forms";
 
 /**
  * Class that contains utility functions.
@@ -71,5 +72,26 @@ export class Utils {
 
     toast.present();
   } // end toast()
+
+
+  static userNameValidators(): Validators {
+
+    return Validators.compose([
+      Validators.maxLength(20),
+      Validators.minLength(3),
+      Validators.pattern("[a-zA-Z0-9]*"),
+      Validators.required
+    ]);
+  } // end userNameValidators()
+
+  static pwValidators() {
+
+    return Validators.compose([
+      Validators.maxLength(20),
+      Validators.minLength(4),
+      Validators.pattern("[a-zA-Z0-9]*"),
+      Validators.required
+    ]);
+  } // end pwValidators()
 
 } // end class

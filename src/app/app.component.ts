@@ -1,52 +1,48 @@
-import { UserProvider } from './../providers/UserProvider';
-import { RegisterPage } from './../pages/register/register';
-import { LoginPage } from './../pages/login/login';
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, Events } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { HomePage } from '../pages/home/home';
-import { LogoutPage } from '../pages/logout/logout';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { UserProvider } from "./../providers/UserProvider";
+import { RegisterPage } from "./../pages/register/register";
+import { LoginPage } from "./../pages/login/login";
+import { Component, ViewChild } from "@angular/core";
+import { Nav, Platform, Events } from "ionic-angular";
+import { StatusBar } from "@ionic-native/status-bar";
+import { SplashScreen } from "@ionic-native/splash-screen";
+import { HomePage } from "../pages/home/home";
+import { LogoutPage } from "../pages/logout/logout";
+import { ViewController } from "ionic-angular/navigation/view-controller";
+import { ModifyUserPage } from "../pages/modify-user/modify-user";
 
 /**
  * This class mainly controls the sidemenu, but renaming it now might cause some unneeded mayhem.
  */
 
 @Component({
-  templateUrl: 'app.html'
-  // providers: [ ViewController ]
+  templateUrl: "app.html"
 })
 export class MyApp {
-
   @ViewChild(Nav) nav: Nav; // the Nav that is marked '#content', I guess?
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string; component: any }>;
 
   constructor(
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public userProvider: UserProvider,
-    public events: Events) {
-
+    public events: Events
+  ) {
     this.initializeApp();
 
     // this.viewCtrl.showBackButton(false); // doesn't work for some reason...
 
     this.pages = [];
 
-    this.events.subscribe('loggedIn', value => {
-
+    this.events.subscribe("loggedIn", value => {
       this.setMenuItems(value);
     });
-
   } // end constructor()
 
   initializeApp() {
-
     this.platform.ready().then(() => {
 
       // Okay, so the platform is ready and our plugins are available.
@@ -67,14 +63,13 @@ export class MyApp {
   setMenuItems(userLoggedIn: boolean) {
 
     if (userLoggedIn === true) {
-
       this.pages.length = 0;
-      this.pages.push({ title: 'Logout', component: LogoutPage });
+      this.pages.push({ title: "Modify User", component: ModifyUserPage });
+      this.pages.push({ title: "Logout", component: LogoutPage });
     } else {
-
       this.pages.length = 0;
-      this.pages.push({ title: 'Login', component: LoginPage });
-      this.pages.push({ title: 'Register', component: RegisterPage });
+      this.pages.push({ title: "Login", component: LoginPage });
+      this.pages.push({ title: "Register", component: RegisterPage });
     }
   } // end setMenuItems()
 } // end class

@@ -64,7 +64,6 @@ export class UserProvider {
 
   // this is implemented elsewhere atm... preserving this stub to remind me that it should be moved here
   logoutUser() {
-
   }
 
   // apparently this can't be done atm because we lack admin rights
