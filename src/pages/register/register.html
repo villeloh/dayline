@@ -8,13 +8,20 @@
 </ion-header>
 
 <ion-content padding>
-  <form class="registerForm" (submit)="register(this.user)">
-    <input class="regInput" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField">
-    <br>
-    <input class="regInput" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField">
-    <br>
-    <input class="regInput" [(ngModel)]="this.user.email" type="email" placeholder="Email" name="emailField">
-    <br>
+  <form #registerFormId class="registerForm" [formGroup] = "registerForm" (submit)="register(this.user)">
+    <ion-item>
+      <ion-label floating>Username</ion-label>
+      <ion-input class="regInput" formControlName="userName" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input class="regInput" formControlName="passWord" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input class="regInput" formControlName="email" [(ngModel)]="this.user.email" type="email" placeholder="Email" name="emailField"></ion-input>
+    </ion-item>
     <button class="regSubmit" ion-button type="submit">Register</button>
   </form>
+  <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
 </ion-content>

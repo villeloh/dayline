@@ -36,7 +36,13 @@ export class UserProvider {
 
     const url = this.baseApiUrl + 'users';
 
-    return this.http.post(url, user, this.options);
+    const body = `{ "username": "${user.username}", "password": "${user.password}", "email": "${user.email}" }`;
+
+    /* I can't just pass the User object here, because for some reason it uses
+     * the internal field names ('_username', etc), which leads to a bad request
+     * on the server-side. I could've just made the internal variables public
+     * instead of using getters and setters, but it seemed a bit sloppy to me. */
+    return this.http.post(url, body, this.options);
   }
 
   loginUser(user: User) {

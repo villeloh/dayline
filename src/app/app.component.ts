@@ -20,11 +20,12 @@ import { ModifyUserPage } from "../pages/modify-user/modify-user";
   templateUrl: "app.html"
 })
 export class MyApp {
+
   @ViewChild(Nav) nav: Nav; // the Nav that is marked '#content', I guess?
 
   rootPage: any = HomePage;
 
-  pages: Array<{ title: string; component: any }>;
+  private pages: Array<{ title: string; component: any }>;
 
   constructor(
     public platform: Platform,
@@ -74,6 +75,14 @@ export class MyApp {
       this.pages.push({ title: "Register", component: RegisterPage });
     }
   } // end setMenuItems()
+
+
+  // I didn't find a way to make these two methods work correctly...
+  // making them static means we lose the reference to this.pages;
+  // yet without that they can't be called from outside the class without
+  // instantiating a new 'myApp', which seems all kinds of horrible.
+  // A solution might be to make 'pages' static as well, but I'm not going to risk
+  // that as I'm running out of time...
 
   // the items in the side menu need to be modified based on
   // what page the user is currently on.

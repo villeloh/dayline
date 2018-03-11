@@ -11,9 +11,9 @@ export class User {
 
   constructor(username: string = '', password: string = '', email: string = '') {
 
-    this.username = username;
-    this.password = password;
-    this.email = email;
+    this._username = username;
+    this._password = password;
+    this._email = email;
   }
 
   // not sure if this is the format that these are supposed to take...

@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http/src/response";
+import { UpperCasePipe } from '@angular/common';
 
 /**
  * Page for modifying user info. It being a page is not really ideal
@@ -62,35 +63,35 @@ export class ModifyUserPage {
 
   updateUserInfo(user: User) {
 
-    this.userProvider.updateUser(user)
-    .subscribe(res => {
+    if (user.username !== '' || user.email !== '' || user.password !== '') {
 
-      Utils.toast(this.toastCtrl, 'Updated User Data!');
+      this.userProvider.updateUser(user)
+      .subscribe(res => {
 
-      // the logic starts to get a little brittle here... since we can send the form
-      // even with an empty username/email field, this check is needed again here
-      // (even though it already exists in the UserProvider's updateUser() method)
-      if (user.username !== '') {
-        localStorage.setItem('username', user.username);
-      }
+        Utils.toast(this.toastCtrl, 'Updated User Data!');
 
-      if (user.email !== '') {
-        localStorage.setItem('email', user.email);
-      }
+        this.navCtrl.setRoot(this.imgListPage); // it's easiest to just return to the imgListPage after changes...
+      },
+      (error: HttpErrorResponse) => {
 
-      this.navCtrl.setRoot(this.imgListPage); // it's easiest to just return to the imgListPage after changes...
-    },
-    (error: HttpErrorResponse) => {
+        // NOTE: the only reason for this error to occur should be that the username was already taken.
+        // thus there's no need to check specifically for that with the userNameFree() method...
+        // I tried to do that earlier and it resulted in a terrible mess. hopefully this will
+        // work just fine...
+        console.log('Userdata update error: ' + error.error.message);
 
-      // NOTE: the only reason for this error to occur should be that the username was already taken.
-      // thus there's no need to check specifically for that with the userNameFree() method...
-      // I tried to do that earlier and it resulted in a terrible mess. hopefully this will
-      // work just fine...
-      console.log(error.error.message);
+        Utils.toast(this.toastCtrl, 'Username taken; please choose another one');
 
-      // TODO: warn about the username being already taken
+      }); // end subscribe()
+    } else {
 
-    }); // end subscribe()
+      Utils.toast(this.toastCtrl, 'Please enter a value to be changed');
+    } // end if-else
   } // end updateUserInfo()
+
+  exit() {
+
+    this.navCtrl.setRoot(this.imgListPage);
+  }
 
 } // end class

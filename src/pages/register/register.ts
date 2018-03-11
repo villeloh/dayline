@@ -1,10 +1,12 @@
+import { Utils } from './../../utils/Utils';
 import { Page } from 'ionic-angular/navigation/nav-util';
 import { ImgListPage } from './../img-list/img-list';
 import { UserProvider } from './../../providers/UserProvider';
 import { User } from './../../models/User';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 /**
  * Page for registering a new user. Upon successful registering,
@@ -18,22 +20,39 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/respon
 })
 export class RegisterPage {
 
-  baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
+  baseApiUrl = Utils.BASE_API_URL;
 
-  user: User = new User();
+  user: User;
   imgListPage: Page = ImgListPage;
+  registerForm: FormGroup;
+  submitAttempt: boolean;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public userProvider: UserProvider,
-    public events: Events) {
+    public events: Events,
+    public formBuilder: FormBuilder,
+    private toastCtrl: ToastController
+  ) {
+
+    this.user = new User();
+    this.submitAttempt = false;
+
+    this.registerForm = formBuilder.group({
+
+      userName: ["", Utils.userNameValidators()],
+      passWord: ["", Utils.pwValidators()],
+      email: ["", Utils.emailValidators()]
+    });
   }
 
   ionViewDidLoad() {
   }
 
   register(user: User) {
+
+    this.submitAttempt = true;
 
     // four subscribes is a 'bit' much... TODO: clear this up somehow -.-
     // logging in the user gets the token, which is needed for getting id,
@@ -46,7 +65,7 @@ export class RegisterPage {
 
       if (!userNameAvailable) {
 
-        // TODO: send alert about failure to the user...
+        Utils.toast(this.toastCtrl, 'Username taken; please choose another one');
 
       } else {
 
@@ -64,7 +83,7 @@ export class RegisterPage {
 
               localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
               this.navCtrl.setRoot(this.imgListPage);
-              this.events.publish('loggedIn', true); // duplicate code with login.ts; fragile! ... not sure how to combine them atm
+              this.events.publish('loggedIn', true); // duplicate code with login.ts... not sure how to combine them atm
             });
           },
           (error: HttpErrorResponse) => console.log("error registering: " + error.error.message));
@@ -74,4 +93,5 @@ export class RegisterPage {
       } // end if-else
     }); // end outer subscribe()
   } // end register()
+
 } // end class

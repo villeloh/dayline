@@ -8,6 +8,8 @@ import { Validators } from "@angular/forms";
 
 export class Utils {
 
+  private static SPECIAL_CHARS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
+
   // constants for use all over the app
   static get BASE_API_URL() {
     return 'http://media.mw.metropolia.fi/wbma/';
@@ -57,9 +59,10 @@ export class Utils {
   static toast(toastCtrl: ToastController, msg: string, delay: number = 1200, pos: string = 'top') {
 
     // needing to pass this a ToastController is a bit awkward, but I'm not sure how the
-    // logic would behave if I'd just create one
+    // logic would behave if I'd just create one. not to mention that it needs some
+    // parameters that I'm not sure how to provide.
 
-    let toast = toastCtrl.create({
+    const toast = toastCtrl.create({
       message: msg,
       duration: delay, // ms
       position: pos // options: top, bottom, middle
@@ -73,25 +76,35 @@ export class Utils {
     toast.present();
   } // end toast()
 
-
   static userNameValidators(): Validators {
 
     return Validators.compose([
       Validators.maxLength(20),
-      Validators.minLength(3),
-      Validators.pattern("[a-zA-Z0-9]*"),
+      Validators.minLength(4),
+      Validators.pattern('^[a-zA-Z0-9]+$'),
       Validators.required
     ]);
   } // end userNameValidators()
 
-  static pwValidators() {
+  static pwValidators(): Validators {
+
+    // must contain 1 special character, 2 numbers, 2 small letters and 1 capital letter
+    return Validators.compose([
+      Validators.maxLength(15),
+      Validators.minLength(6),
+      Validators.pattern('^(?=.*['+this.SPECIAL_CHARS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$'),
+      Validators.required
+    ]);
+  } // end pwValidators()
+
+  static emailValidators(): Validators {
 
     return Validators.compose([
       Validators.maxLength(20),
       Validators.minLength(4),
-      Validators.pattern("[a-zA-Z0-9]*"),
+      Validators.pattern('^[^'+this.SPECIAL_CHARS+'\\d\\s+][a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,3}$'),
       Validators.required
     ]);
-  } // end pwValidators()
+  } // end emailValidators()
 
 } // end class
