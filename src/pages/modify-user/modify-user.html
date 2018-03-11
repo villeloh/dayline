@@ -8,16 +8,21 @@
 </ion-header>
 
 <ion-content padding>
-  <form novalidate #modifyUserFormId [formGroup] = "modifyUserFormGroup" class="modifyUserForm" (submit)="login(this.user)">
+  <p>Logged in as {{this.usernameFromLocalStorage}}</p>
+  <form novalidate #modifyUserFormId [formGroup] = "modifyUserFormGroup" class="modifyUserForm" (submit)="updateUserInfo(this.user)">
     <ion-item>
-      <ion-label floating>Username</ion-label>
-      <ion-input formControlName="userName" class="loginInput" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
+      <ion-label>Enter new username: </ion-label>
+      <ion-input formControlName="userName" class="modifyUserInput" [(ngModel)]="this.user.username" placeholder="{{this.usernameForPlaceholder}}" name="usernameField"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Password</ion-label>
-      <ion-input formControlName="passWord" class="loginInput" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
+      <ion-label>Enter new email: </ion-label>
+      <ion-input formControlName="email" class="modifyUserInput" [(ngModel)]="this.user.email" placeholder="{{this.emailForPlaceholder}}" type="password" name="emailField"></ion-input>
     </ion-item>
-    <button class="loginSubmit" ion-button type="submit">Login</button>
+    <ion-item>
+      <ion-label>Enter new password: </ion-label>
+      <ion-input formControlName="passWord" class="modifyUserInput" [(ngModel)]="this.user.password" placeholder="" type="password" name="pwField"></ion-input>
+    </ion-item>
+    <button class="modifyUserSubmit" ion-button type="submit">Save Changes</button>
   </form>
 </ion-content>
 

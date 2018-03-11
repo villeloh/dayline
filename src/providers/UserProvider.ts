@@ -47,7 +47,7 @@ export class UserProvider {
     return this.http.post(url, body, this.options);
   } // end loginUser()
 
-  updateUser(stat: string, newValue: string) {
+  updateUser(user: User) {
 
     const url = this.baseApiUrl + 'users';
     const token = localStorage.getItem('token'); // to avoid duplicate code, this should be provided to all these methods somehow
@@ -56,9 +56,25 @@ export class UserProvider {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
     };
 
-    const request = { stat: newValue };
+    let request = {};
     // possible stats: 'username', 'password', 'email'
 
+    // validation is done before calling this method, so these fields are either valid
+    // or empty (due to the way in which the 'modify user' form works)
+    if (user.username !== '') {
+      request['username'] = user.username;
+    }
+
+    if (user.password !== '') {
+      request['password'] = user.password;
+    }
+
+    if (user.email !== '') {
+      request['email'] = user.email;
+    }
+
+    // if all the 'modify user' form fields are empty, the submit event is invalid and so this method will
+    // never be reached. therefore, this put request should always be successful.
     return this.http.put(url, request, options);
   } // end updateUser()
 

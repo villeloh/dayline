@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
   templateUrl: "login.html"
 })
 export class LoginPage {
-  user: User = new User();
+  user: User;
   imgListPage: Page = ImgListPage;
   loginFormGroup: FormGroup;
 
@@ -25,25 +25,33 @@ export class LoginPage {
     public formBuilder: FormBuilder
   ) {
 
+    this.user = new User();
+
     this.loginFormGroup = formBuilder.group({
       userName: ["", Utils.userNameValidators()],
       passWord: ["", Utils.pwValidators()]
     });
   } // end constructor()
 
-  ionViewDidLoad() {}
+  ionViewDidLoad() {
+  }
 
   login(user: User) {
     // TODO: clear this mess with async / await...
     this.userProvider.loginUser(user).subscribe(
       res => {
         localStorage.setItem("token", res["token"]);
+        console.log('token: ' + localStorage.getItem('token') );
 
-        this.userProvider.getUserInfo().subscribe(user => {
-          localStorage.setItem("user_id", user["user_id"]); // set it once on login so it can be used anywhere
+        this.userProvider.getUserInfo()
+        .subscribe(userInfo => {
+
+          localStorage.setItem("user_id", userInfo["user_id"]);
+          localStorage.setItem("username", userInfo["username"]); // used somewhere so it can't be deleted (TODO: search and remove!)
           this.navCtrl.setRoot(this.imgListPage);
           this.events.publish("loggedIn", true); // used to update the side-menu items (Logout, Login, etc)
-        });
+        },
+        (error: HttpErrorResponse) => console.log(error.error.message));
       },
       (error: HttpErrorResponse) => console.log(error.error.message)
     );

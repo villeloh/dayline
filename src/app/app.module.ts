@@ -1,3 +1,4 @@
+import { ModifyUserPage } from './../pages/modify-user/modify-user';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { LogoutPage } from './../pages/logout/logout';
 import { ThumbnailPipe } from './../pipes/thumbnail/thumbnail';
@@ -26,6 +27,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     RegisterPage,
     ImgListPage,
     LogoutPage,
+    ModifyUserPage,
     ImageBoxComponent,
     ImgModalComponent,
     ThumbnailPipe
@@ -44,6 +46,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     RegisterPage,
     ImgListPage,
     LogoutPage,
+    ModifyUserPage,
     ImageBoxComponent,
     ImgModalComponent
   ],

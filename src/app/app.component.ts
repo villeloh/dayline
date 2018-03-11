@@ -1,3 +1,4 @@
+import { Page } from 'ionic-angular/navigation/nav-util';
 import { UserProvider } from "./../providers/UserProvider";
 import { RegisterPage } from "./../pages/register/register";
 import { LoginPage } from "./../pages/login/login";
@@ -11,7 +12,8 @@ import { ViewController } from "ionic-angular/navigation/view-controller";
 import { ModifyUserPage } from "../pages/modify-user/modify-user";
 
 /**
- * This class mainly controls the sidemenu, but renaming it now might cause some unneeded mayhem.
+ * This class mainly controls the sidemenu, but renaming it now
+ * (or moving the functionality) might cause some unneeded mayhem.
  */
 
 @Component({
@@ -72,4 +74,25 @@ export class MyApp {
       this.pages.push({ title: "Register", component: RegisterPage });
     }
   } // end setMenuItems()
+
+  // the items in the side menu need to be modified based on
+  // what page the user is currently on.
+  popMenuItem(title: string) {
+
+    for (let item of this.pages) {
+      if (item['title'] === title) {
+
+        const index = this.pages.indexOf(item);
+        this.pages.splice(index, 1);
+        return;
+      }
+    }
+  } // end popMenuItem()
+
+  pushMenuItem(page: { title: string, component: Page }) {
+
+    // the order of the menu items might get scrambled, but it's too much to avert right now
+    this.pages.push(page);
+  }
+
 } // end class
