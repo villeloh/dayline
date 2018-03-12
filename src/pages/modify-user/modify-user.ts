@@ -26,8 +26,9 @@ export class ModifyUserPage {
   usernameForPlaceholder: string;
   emailForPlaceholder: string;
   passwordForPlaceholder: string;
-  modifyUserFormGroup: FormGroup;
+  modifyUserForm: FormGroup;
   imgListPage: Page = ImgListPage;
+  submitAttempt: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -38,22 +39,23 @@ export class ModifyUserPage {
   ) {
 
     this.user = new User();
+    this.submitAttempt = false;
 
-    this.modifyUserFormGroup = formBuilder.group({
-      userName: ["", Utils.userNameValidators()],
-      email: [""], // TODO: add validators!!
-      passWord: ["", Utils.pwValidators()]
+    this.modifyUserForm = formBuilder.group({
+      userName: ["", Utils.modUserNameValidators()],
+      email: ["", Utils.modEmailValidators()],
+      passWord: ["", Utils.modPwValidators()]
     });
 
     this.userProvider.getUserInfo()
     .subscribe(userInfo => {
 
       // I thought this might be better than using localStorage to store
-      // email and password, but it is another request that slows down
-      // the loading of the page...
+      // username and email, but it *is* another request that slows down
+      // the loading of the page... Also, it seems that password
+      // cannot be accessed like this, probably for security reasons. Oh well.
       this.usernameForPlaceholder = userInfo["username"];
       this.emailForPlaceholder = userInfo['email'];
-      this.passwordForPlaceholder = userInfo['password'];
     },
     (error: HttpErrorResponse) => console.log(error.error.message));
   } // end constructor()
@@ -62,6 +64,12 @@ export class ModifyUserPage {
   }
 
   updateUserInfo(user: User) {
+
+    this.submitAttempt = true;
+
+    if (!this.modifyUserForm.valid) {
+      return;
+    }
 
     if (user.username !== '' || user.email !== '' || user.password !== '') {
 
@@ -83,10 +91,7 @@ export class ModifyUserPage {
         Utils.toast(this.toastCtrl, 'Username taken; please choose another one');
 
       }); // end subscribe()
-    } else {
-
-      Utils.toast(this.toastCtrl, 'Please enter a value to be changed');
-    } // end if-else
+    } // end if
   } // end updateUserInfo()
 
   exit() {

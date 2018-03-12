@@ -8,8 +8,6 @@ import { Validators } from "@angular/forms";
 
 export class Utils {
 
-  private static SPECIAL_CHARS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
-
   // constants for use all over the app
   static get BASE_API_URL() {
     return 'http://media.mw.metropolia.fi/wbma/';
@@ -76,7 +74,10 @@ export class Utils {
     toast.present();
   } // end toast()
 
-  static userNameValidators(): Validators {
+  // ========= VALIDATORS =======================================================================
+  // (should be in their own file probably... oh well)
+
+  static regUserNameValidators(): Validators {
 
     return Validators.compose([
       Validators.maxLength(20),
@@ -84,27 +85,65 @@ export class Utils {
       Validators.pattern('^[a-zA-Z0-9]+$'),
       Validators.required
     ]);
-  } // end userNameValidators()
+  } // end regUserNameValidators()
 
-  static pwValidators(): Validators {
+  static regPwValidators(): Validators {
+
+    const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
 
     // must contain 1 special character, 2 numbers, 2 small letters and 1 capital letter
     return Validators.compose([
       Validators.maxLength(15),
       Validators.minLength(6),
-      Validators.pattern('^(?=.*['+this.SPECIAL_CHARS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$'),
+      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$'),
       Validators.required
     ]);
-  } // end pwValidators()
+  } // end regPwValidators()
 
-  static emailValidators(): Validators {
+  static regEmailValidators(): Validators {
+
+    // for some reason, this doesn't work if I put it on top of the file as 'private static SPECIALS';
+    // it claims that "'this' is undefined".
+    const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
+
+    return Validators.compose([
+      Validators.maxLength(30),
+      Validators.minLength(4),
+      Validators.pattern('^[^'+SPECIALS+'\\d\\s+][a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,3}$'),
+      Validators.required
+    ]);
+  } // end regEmailValidators()
+
+  static modUserNameValidators(): Validators {
 
     return Validators.compose([
       Validators.maxLength(20),
       Validators.minLength(4),
-      Validators.pattern('^[^'+this.SPECIAL_CHARS+'\\d\\s+][a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,3}$'),
-      Validators.required
+      Validators.pattern('^[a-zA-Z0-9]+$')
     ]);
-  } // end emailValidators()
+  } // end modUserNameValidators()
+
+  static modPwValidators(): Validators {
+
+    const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
+
+    // must contain 1 special character, 2 numbers, 2 small letters and 1 capital letter
+    return Validators.compose([
+      Validators.maxLength(15),
+      Validators.minLength(6),
+      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$')
+    ]);
+  } // end modPwValidators()
+
+  static modEmailValidators(): Validators {
+
+    const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
+
+    return Validators.compose([
+      Validators.maxLength(30),
+      Validators.minLength(4),
+      Validators.pattern('^[^'+SPECIALS+'\\d\\s+][a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{2,3}$')
+    ]);
+  } // end modEmailValidators()
 
 } // end class

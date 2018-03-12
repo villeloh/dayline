@@ -11,15 +11,15 @@
   <form #registerFormId class="registerForm" [formGroup] = "registerForm" (submit)="register(this.user)">
     <ion-item>
       <ion-label floating>Username</ion-label>
-      <ion-input class="regInput" formControlName="userName" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
+      <ion-input class="regInput" [class.invalid]="!registerForm.controls.userName.valid && (registerForm.controls.userName.dirty || submitAttempt)" formControlName="userName" [(ngModel)]="this.user.username" placeholder="Username" name="usernameField"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Password</ion-label>
-      <ion-input class="regInput" formControlName="passWord" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
+      <ion-input class="regInput" [class.invalid]="!registerForm.controls.passWord.valid && (registerForm.controls.passWord.dirty || submitAttempt)" formControlName="passWord" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Email</ion-label>
-      <ion-input class="regInput" formControlName="email" [(ngModel)]="this.user.email" type="email" placeholder="Email" name="emailField"></ion-input>
+      <ion-input class="regInput" [class.invalid]="!registerForm.controls.email.valid && (registerForm.controls.email.dirty || submitAttempt)" formControlName="email" [(ngModel)]="this.user.email" type="email" placeholder="Email" name="emailField"></ion-input>
     </ion-item>
     <button class="regSubmit" ion-button type="submit">Register</button>
   </form>

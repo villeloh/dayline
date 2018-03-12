@@ -10,12 +10,10 @@
 <ion-content padding>
 
   <form (submit)="upload()">
-
     <button (click)="browse($event)" clear>
-        <ion-icon id="browse-icon" name="add-circle"></ion-icon>
+      <ion-icon id="browse-icon" name="add-circle"></ion-icon>
     </button>
     <input (change)="getFile($event)" type="file" placeholder="file" name="fileField" style="display: none" #fileInputField>
-
     <input [(ngModel)]="this.description" placeholder="description" name="descField">
     <input type="submit" value="Upload">
   </form>

@@ -6,7 +6,7 @@ import { DlImage } from './../../models/DlImage';
 import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
 import { Component, ViewChild, Renderer } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 import { ImgModalComponent } from '../../components/img-modal/img-modal';
 
@@ -33,7 +33,8 @@ export class ImgListPage {
     public modalCtrl: ModalController,
     public imgProvider: ImgProvider,
     public userProvider: UserProvider,
-    private renderer: Renderer) {
+    private renderer: Renderer,
+    private toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -76,23 +77,19 @@ export class ImgListPage {
   upload() {
 
     const formattedDateStr = Utils.formattedDateStr();
-    console.log('formattedDateStr: ' + formattedDateStr);
     const uploadDate = new Date(formattedDateStr);
     let proceed: boolean;
-
-    console.log('this.lastUploadDate: ' + this.lastUploadDate);
 
     if (this.lastUploadDate !== undefined && this.lastUploadDate !== null) {
 
       proceed = uploadDate.getTime() > this.lastUploadDate.getTime();
-      console.log('proceed when images exist: ' + proceed);
     } else {
       proceed = true; // no images on the list
     }
 
     if (!proceed) {
 
-      // TODO: display an alert about invalid upload date
+      Utils.toast(this.toastCtrl, "You've already added an image today!");
     } else {
 
       const storedThis = this; // store a 'this' reference for use in the setTimeOut()
@@ -110,26 +107,21 @@ export class ImgListPage {
         this.imgProvider.getImageByImageId(res['file_id'])
         .subscribe(img => {
 
-          console.log('image added at time: ' + img['time_added']);
-
           const dlImg = new DlImage(img['title'], img['filename'], img['description'], img['time_added'],
           img['user_id'], img['file_id'], img['thumbnails']);
 
-          const delay = 150; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
+          const delay = 2000; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
           // NOTE: the delay would ideally depend on the size of the image / length of the upload process
 
           setTimeout(function() {
 
             storedThis.imageList.unshift(dlImg); // add it as the first element of the array
             storedThis.lastUploadDate = new Date(dlImg.title); // update the upload date (so we can't add a new image on the same day)
-            console.log('inner lastUploadDate: ' + storedThis.lastUploadDate);
-            // NOTE: this should be done differently somehow... Observe the list and do this whenever it changes?
           }, delay);
         });
       },
       (error: HttpErrorResponse) => console.log(error.error.message));
     } // end if-else
-
   } // end upload()
 
   getFile(event: any) {

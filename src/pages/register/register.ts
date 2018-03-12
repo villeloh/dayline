@@ -25,7 +25,7 @@ export class RegisterPage {
   user: User;
   imgListPage: Page = ImgListPage;
   registerForm: FormGroup;
-  submitAttempt: boolean;
+  submitAttempt: boolean; // show a warning msg if you try to send an invalid form
 
   constructor(
     public navCtrl: NavController,
@@ -41,9 +41,9 @@ export class RegisterPage {
 
     this.registerForm = formBuilder.group({
 
-      userName: ["", Utils.userNameValidators()],
-      passWord: ["", Utils.pwValidators()],
-      email: ["", Utils.emailValidators()]
+      userName: ["", Utils.regUserNameValidators()],
+      passWord: ["", Utils.regPwValidators()],
+      email: ["", Utils.regEmailValidators()]
     });
   }
 
@@ -53,6 +53,10 @@ export class RegisterPage {
   register(user: User) {
 
     this.submitAttempt = true;
+
+    if (!this.registerForm.valid) {
+      return;
+    }
 
     // four subscribes is a 'bit' much... TODO: clear this up somehow -.-
     // logging in the user gets the token, which is needed for getting id,
