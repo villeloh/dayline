@@ -8,9 +8,10 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button (click)="goToPage(loginPage)">Login</button>
-  <br>
-  <button ion-button (click)="goToPage(registerPage)">Register</button>
+  <div id="buttonDiv" text-center>
+    <button ion-button (click)="goToPage(loginPage)">Login</button>
+    <button ion-button (click)="goToPage(registerPage)">Register</button>
+  </div>
   <ion-item>
     <img src="assets/imgs/logo.png">
   </ion-item>

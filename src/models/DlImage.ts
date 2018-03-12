@@ -1,5 +1,3 @@
-import { Directive, Component } from "@angular/core/src/metadata/directives";
-
 
 /**
  * Data model class for custom image objects.
@@ -26,21 +24,16 @@ export class DlImage {
     this.user_id = user_id;
     this.time_added = time_added;
     this.thumbnails = thumbnails;
-  }
-
-  /*
-  convertObjToDlImg(obj: object) {
-
-    Object.assign(this, obj); // does 'this' have the correct reference here..?
-  }
-  */
+  } // end constructor()
 
   alterDlImg(stat: string, newValue: string) {
 
+    // only titles and descriptions will need to be altered
     if (stat === 'title' || stat === 'description') {
       this[stat] = newValue;
     } else {
       console.log('invalid stat while altering dlImage!');
     }
   } // end alterDlImg()
+
 } // end class

@@ -16,12 +16,16 @@ export class ImgProvider {
 
   getImagesByUserId(id: number) {
 
-    const token = localStorage.getItem('token'); // will only be called when the user is logged in, so no check is needed
+    // will only be called when the user is logged in, so no empty-check is needed
+    const token = localStorage.getItem('token');
 
     const url = this.baseApiUrl + 'media/user/' + id;
 
     const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
+      headers: new HttpHeaders()
+
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', token)
     };
 
     return this.http.get<object[]>(url, options);
@@ -32,6 +36,7 @@ export class ImgProvider {
     const url = this.baseApiUrl + 'media/' + id;
 
     const options = {
+
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     };
 
@@ -42,14 +47,15 @@ export class ImgProvider {
 
     const url = this.baseApiUrl + 'media';
 
-    // adding Content-Type: multipart/form-data gives an error... while if it's left out, it's added
+    // adding Content-Type: multipart/form-data gives an error...
+    // while if it's left out, it's added
     // automatically without any problems. -.-
     const options = {
+
       headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
     };
 
     return this.http.post(url, formData, options);
-    // response contains: 'message': string, 'file_id': number
   } // end uploadImage()
 
   updateImage(imgId: number, desc: string) {
@@ -57,6 +63,7 @@ export class ImgProvider {
     const url = this.baseApiUrl + 'media/' + imgId;
 
     const options = {
+
       headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
     };
 
@@ -70,9 +77,11 @@ export class ImgProvider {
     const url = this.baseApiUrl + 'media/' + imgId;
 
     const options = {
+
       headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
     };
 
     return this.http.delete(url, options);
   } // end deleteImage()
+
 } // end class

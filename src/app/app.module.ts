@@ -1,5 +1,4 @@
 import { ModifyUserPage } from './../pages/modify-user/modify-user';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { LogoutPage } from './../pages/logout/logout';
 import { ThumbnailPipe } from './../pipes/thumbnail/thumbnail';
 import { ImgModalComponent } from './../components/img-modal/img-modal';
@@ -11,7 +10,7 @@ import { UserProvider } from './../providers/UserProvider';
 import { ImgProvider } from './../providers/ImgProvider';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule, NavController } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MyApp } from './app.component';

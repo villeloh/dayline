@@ -4,9 +4,9 @@ import { Page } from "ionic-angular/navigation/nav-util";
 import { HttpErrorResponse } from "@angular/common/http/src/response";
 import { UserProvider } from "./../../providers/UserProvider";
 import { User } from "./../../models/User";
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { IonicPage, NavController, Events,  ToastController } from "ionic-angular";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @IonicPage()
 @Component({

@@ -1,13 +1,12 @@
+import { Utils } from './../../utils/Utils';
 import { ThumbnailPipe } from "./../../pipes/thumbnail/thumbnail";
 import { HttpErrorResponse } from "@angular/common/http/src/response";
 import { ImgProvider } from "./../../providers/ImgProvider";
 import { DlImage } from "./../../models/DlImage";
 import { ImgListPage } from "./../../pages/img-list/img-list";
-import { Page } from "ionic-angular/navigation/nav-util";
-import { NavParams, NavController, AlertController } from "ionic-angular";
+import { NavParams, NavController, AlertController, ToastController } from "ionic-angular";
 import { Component, ViewChild } from "@angular/core";
 import { ViewController } from "ionic-angular/navigation/view-controller";
-import { ElementRef } from "@angular/core/src/linker/element_ref";
 
 /**
  * Presents a larger view of the image (with controls), upon clicking
@@ -32,25 +31,27 @@ export class ImgModalComponent {
     public params: NavParams,
     public imgProvider: ImgProvider,
     public navCtrl: NavController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) {
-    this.dlImage = params.get("dlImage"); // entire image object... inefficient perhaps
+    this.dlImage = params.get("dlImage");
     this.filename = this.dlImage.filename;
     this.file_id = this.dlImage.file_id;
     this.description = this.dlImage.description;
-  }
+  } // end constructor()
 
-  // maybe send back a blurb text; 'you deleted image_x!'?
+  // Not used atm
   closeModal(info?: any) {
     this.viewCtrl.dismiss(info);
-    // OR: display toast about deleting
   }
 
   // called upon clicking a trashcan icon in the corner of the image
   delete(img: DlImage) {
+
     const id: number = img.file_id;
 
-    // technically this should be moved to Utils.ts, but since it's only used once, it might as well be here.
+    // technically this should be moved to Utils.ts, but since
+    // it's only used once, it might as well be here.
     const alert = this.alertCtrl.create({
       title: "Delete Image",
       message: "Are you sure you want to delete this image?",
@@ -65,56 +66,62 @@ export class ImgModalComponent {
         {
           text: "Yes",
           handler: () => {
-            this.imgProvider.deleteImage(id).subscribe(
-              res => {
-                console.log("deleted img # " + id);
+            this.imgProvider.deleteImage(id)
+            .subscribe(res => {
+
+                Utils.toast(this.toastCtrl, 'Deleted Image!');
                 this.navCtrl.setRoot(ImgListPage);
               },
               (error: HttpErrorResponse) => console.log(error.error.message)
-            );
+            ); // end subscribe()
           }
         }
-      ]
-    });
+      ] // end buttons[]
+    }); // end alert
     alert.present();
   } // end delete()
 
   update() {
     const prompt = this.alertCtrl.create({
-      title: "Change text",
+      title: "Change Text",
       message: "Enter a new text for the image:",
       inputs: [
         {
           name: "text",
-          placeholder: this.description // ideally, the old text would be there in an editable form, but I'm not sure how to do that
+          placeholder: this.description
+          // ideally, the old text would be there in an editable form,
+          // but I'm not sure how to do that
         }
       ],
       buttons: [
         {
           text: "Cancel",
           handler: data => {
-            console.log("Cancel clicked");
+
           }
         },
         {
           text: "Save",
           handler: data => {
+
             const newText = data.text;
 
-            this.imgProvider.updateImage(this.file_id, newText).subscribe(
-              res => {
-                console.log(res["message"]);
+            this.imgProvider.updateImage(this.file_id, newText)
+            .subscribe(res => {
 
                 this.description = newText;
                 this.dlImage.description = newText;
               },
-              (error: HttpErrorResponse) => console.log(error.error.message)
-              // TODO: toast about failing to update image
-            ); // end subscribe()
+              (error: HttpErrorResponse) => {
+
+                console.log(error.error.message);
+                Utils.toast(this.toastCtrl, 'Failed to Update Image!');
+              }); // end subscribe()
           } // end handler
         }
-      ] // end buttons
+      ] // end buttons[]
     });
     prompt.present();
   } // end update()
+
 } // end class

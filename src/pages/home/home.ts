@@ -38,7 +38,7 @@ export class HomePage {
 
       console.log(error.error.message);
       this.events.publish('loggedIn', false); // used to set the sidemenu items correctly
-      Utils.toast(this.toastCtrl, Utils.WELCOME_MSG);
+      Utils.toast(this.toastCtrl, Utils.WELCOME_MSG, 'bottom');
     });
   } // end ionViewDidLoad()
 
@@ -46,4 +46,5 @@ export class HomePage {
 
     this.navCtrl.setRoot(page);
   }
+
 } // end class

@@ -1,6 +1,8 @@
-<p class="imageUploadTime">{{ img.title }}</p>
-<div class="imageBoxImgDiv">
-  <img [name]="img.file_id" [src]="img.filename | thumbnail:'normal'" />
+<div class="imageBoxContainer">
+  <p class="imageUploadTime">{{ img.title }}</p>
+  <div class="imageBoxImgDiv">
+    <img [name]="img.file_id" [src]="img.filename | thumbnail:'normal'" />
+  </div>
+  <hr>
+  <p class="imageBoxDesc">{{ img.description }}</p>
 </div>
-<hr>
-<p class="imageBoxDesc">{{ img.description }}</p>

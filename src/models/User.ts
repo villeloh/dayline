@@ -17,7 +17,8 @@ export class User {
   }
 
   // not sure if this is the format that these are supposed to take...
-  // it complains about duplicate variables if I first make 'private username' etc
+  // it complains about duplicate variables if I name the inner variables identically,
+  // so I added underscores to them.
   set username (value) {
     this._username = value;
   }

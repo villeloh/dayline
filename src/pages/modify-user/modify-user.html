@@ -24,6 +24,9 @@
       <ion-label>Enter new password: </ion-label>
       <ion-input formControlName="passWord" class="modifyUserInput" [class.invalid]="!modifyUserForm.controls.passWord.valid && (modifyUserForm.controls.passWord.dirty || submitAttempt)" [(ngModel)]="this.user.password" placeholder="" type="password" name="pwField"></ion-input>
     </ion-item>
+    <ion-item *ngIf="!modifyUserForm.controls.passWord.valid  && (modifyUserForm.controls.passWord.dirty || submitAttempt)">
+        <p>A valid pw has at least 2 small letters, 1 special <br>character, 1 number and 1 capital letter.</p>
+    </ion-item>
     <button class="modifyUserSubmit" ion-button type="submit">Save Changes</button>
     <button class="modifyUserCancel" ion-button type="button" (click)="exit()">Exit Without Saving</button>
   </form>

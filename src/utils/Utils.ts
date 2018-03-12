@@ -1,9 +1,8 @@
-import { AlertController } from "ionic-angular/components/alert/alert-controller";
 import { ToastController } from 'ionic-angular';
 import { Validators } from "@angular/forms";
 
 /**
- * Class that contains utility functions.
+ * Class that contains utility functions, for use across the app.
  */
 
 export class Utils {
@@ -42,19 +41,8 @@ export class Utils {
     return year + '-' + stringMonth + '-' + stringDay; // should add 'Z' to make it UTC time... but it stops working if I do that!
   } // end formattedDateStr()
 
-  // used for informing the user of various things, e.g. failing to fill out forms properly.
-  static simpleAlert(ctrl: AlertController, title: string, msg: string) {
-
-    const alert = ctrl.create({
-      title: title,
-      subTitle: msg,
-      buttons: ['OK']
-    });
-    alert.present();
-  } // end simpleAlert()
-
-  // a simple toast that disappears after a delay
-  static toast(toastCtrl: ToastController, msg: string, delay: number = 1200, pos: string = 'top') {
+  // a simple toast that disappears after a small delay
+  static toast(toastCtrl: ToastController, msg: string, pos: string = 'top', delay: number = 1200) {
 
     // needing to pass this a ToastController is a bit awkward, but I'm not sure how the
     // logic would behave if I'd just create one. not to mention that it needs some
@@ -68,7 +56,7 @@ export class Utils {
 
     toast.onDidDismiss(() => {
 
-      console.log('Dismissed toast');
+      // no need to do anything I guess...
     });
 
     toast.present();
@@ -89,21 +77,21 @@ export class Utils {
 
   static regPwValidators(): Validators {
 
+    // for some reason, this doesn't work if I put it on top of the file as 'private static SPECIALS';
+    // it claims that "'this' is undefined".
     const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
 
-    // must contain 1 special character, 2 numbers, 2 small letters and 1 capital letter
+    // must contain 1 special character, 1 number, 2 small letters and 1 capital letter
     return Validators.compose([
       Validators.maxLength(15),
       Validators.minLength(6),
-      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$'),
+      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{1,}).*$'),
       Validators.required
     ]);
   } // end regPwValidators()
 
   static regEmailValidators(): Validators {
 
-    // for some reason, this doesn't work if I put it on top of the file as 'private static SPECIALS';
-    // it claims that "'this' is undefined".
     const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
 
     return Validators.compose([
@@ -127,11 +115,11 @@ export class Utils {
 
     const SPECIALS = "\\!\\$\\&\\%\\+\\#\\\\\{\\}\\@\\/\\[\\]\\*\\;\\^\\'\\~\\<\\>\\|\\=\\`\\(\\)\\\"";
 
-    // must contain 1 special character, 2 numbers, 2 small letters and 1 capital letter
+    // must contain 1 special character, 1 number, 2 small letters and 1 capital letter
     return Validators.compose([
       Validators.maxLength(15),
       Validators.minLength(6),
-      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{2,}).*$')
+      Validators.pattern('^(?=.*['+SPECIALS+']{1,})(?!.*\\s+)(?=.*[a-z]{2,})(?=.*[A-Z]{1,})(?=.*\\d{1,}).*$')
     ]);
   } // end modPwValidators()
 

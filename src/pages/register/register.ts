@@ -5,8 +5,8 @@ import { UserProvider } from './../../providers/UserProvider';
 import { User } from './../../models/User';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events, ToastController } from 'ionic-angular';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { HttpErrorResponse } from '@angular/common/http/src/response';
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 /**
  * Page for registering a new user. Upon successful registering,

@@ -17,4 +17,5 @@ export class ImageBoxComponent {
 
   constructor() {
   }
-}
+
+} // end class

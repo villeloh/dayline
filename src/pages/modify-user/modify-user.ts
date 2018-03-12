@@ -5,7 +5,7 @@ import { User } from './../../models/User';
 import { Utils } from './../../utils/Utils';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { HttpErrorResponse } from "@angular/common/http/src/response";
 import { UpperCasePipe } from '@angular/common';
 

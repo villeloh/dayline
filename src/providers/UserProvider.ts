@@ -1,11 +1,7 @@
 import { Utils } from './../utils/Utils';
-import { ImgListPage } from './../pages/img-list/img-list';
-import { NavController } from 'ionic-angular';
 import { User } from './../models/User';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Page } from 'ionic-angular/navigation/nav-util';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 
 /**
  * Provides methods for user operations on the remote server.
@@ -16,7 +12,7 @@ export class UserProvider {
 
   baseApiUrl = Utils.BASE_API_URL;
 
-  // default options to use in requests... not sure if it's needed
+  // default options to use in requests
   options = {
     headers: new HttpHeaders().set('Content-Type', 'application/json')
   };
@@ -29,13 +25,11 @@ export class UserProvider {
     const url = this.baseApiUrl + 'users/username/' + userName;
 
     return this.http.get(url, this.options);
-    // response contains: 'username', 'available'(boolean)
   } // end userNameFree()
 
   registerUser(user: User) {
 
     const url = this.baseApiUrl + 'users';
-
     const body = `{ "username": "${user.username}", "password": "${user.password}", "email": "${user.email}" }`;
 
     /* I can't just pass the User object here, because for some reason it uses
@@ -43,7 +37,7 @@ export class UserProvider {
      * on the server-side. I could've just made the internal variables public
      * instead of using getters and setters, but it seemed a bit sloppy to me. */
     return this.http.post(url, body, this.options);
-  }
+  } // end registerUser()
 
   loginUser(user: User) {
 
@@ -56,7 +50,7 @@ export class UserProvider {
   updateUser(user: User) {
 
     const url = this.baseApiUrl + 'users';
-    const token = localStorage.getItem('token'); // to avoid duplicate code, this should be provided to all these methods somehow
+    const token = localStorage.getItem('token');
 
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
@@ -65,8 +59,9 @@ export class UserProvider {
     let request = {};
     // possible stats: 'username', 'password', 'email'
 
-    // validation is done before calling this method, so these fields are either valid
-    // or empty (due to the way in which the 'modify user' form works)
+    // validation is done before calling this method, so when we arrive here,
+    // these fields are either valid or empty
+    // (due to the way in which the 'modify user' form works)
     if (user.username !== '') {
       request['username'] = user.username;
     }
@@ -79,27 +74,30 @@ export class UserProvider {
       request['email'] = user.email;
     }
 
-    // if all the 'modify user' form fields are empty, the submit event is invalid and so this method will
-    // never be reached. therefore, this put request should always be successful.
+    // if all the 'modify user' form fields are empty, the submit event is invalid and
+    // so this method will never be reached. therefore, this put request should always be successful.
     return this.http.put(url, request, options);
   } // end updateUser()
 
-  // this is implemented elsewhere atm... preserving this stub to remind me that it should be moved here
-  logoutUser() {
-  }
-
-  // apparently this can't be done atm because we lack admin rights
-  deleteUser() {
-  }
-
   getUserInfo() {
 
-    const token = localStorage.getItem('token') || ''; // non-ideal; should return 'empty' Observable if no token exists!
+    // non-ideal; should return 'empty' Observable if no token exists!
+    const token = localStorage.getItem('token') || '';
 
     const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)
+
+      headers: new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('x-access-token', token)
     };
 
     return this.http.get(this.baseApiUrl + 'users/user', options);
   } // end getUserInfo()
+
+  // NOTE: logging out is not present here, because it's implemented elsewhere
+  // in a different manner (as there's no need for a request to the server)
+
+  // NOTE #2: deleting a user is not present either, because apparently we lack
+  // the admin rights that are required to do it
+
 } // end class

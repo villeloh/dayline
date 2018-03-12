@@ -17,6 +17,9 @@
       <ion-label floating>Password</ion-label>
       <ion-input class="regInput" [class.invalid]="!registerForm.controls.passWord.valid && (registerForm.controls.passWord.dirty || submitAttempt)" formControlName="passWord" [(ngModel)]="this.user.password" placeholder="Password" type="password" name="pwField"></ion-input>
     </ion-item>
+    <ion-item *ngIf="!registerForm.controls.passWord.valid  && (registerForm.controls.passWord.dirty || submitAttempt)">
+        <p>A valid pw has at least 2 small letters, 1 special <br>character, 1 number and 1 capital letter.</p>
+    </ion-item>
     <ion-item>
       <ion-label floating>Email</ion-label>
       <ion-input class="regInput" [class.invalid]="!registerForm.controls.email.valid && (registerForm.controls.email.dirty || submitAttempt)" formControlName="email" [(ngModel)]="this.user.email" type="email" placeholder="Email" name="emailField"></ion-input>

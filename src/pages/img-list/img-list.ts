@@ -1,5 +1,4 @@
 import { Utils } from './../../utils/Utils';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { ImageBoxComponent } from './../../components/image-box/image-box';
 import { DlImage } from './../../models/DlImage';
@@ -7,7 +6,7 @@ import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
 import { Component, ViewChild, Renderer } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ImgModalComponent } from '../../components/img-modal/img-modal';
 
 @IonicPage()
@@ -21,11 +20,11 @@ export class ImgListPage {
   @ViewChild('fileInputField') fileInputField: any;
 
   imageList: DlImage[];
-  baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
-
+  baseApiUrl = Utils.BASE_API_URL;
   file: File;
   lastUploadDate: Date;
   description: string;
+  noImages: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -34,12 +33,12 @@ export class ImgListPage {
     public imgProvider: ImgProvider,
     public userProvider: UserProvider,
     private renderer: Renderer,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController
+  ) {
+    this.noImages = false;
   }
 
   ionViewDidLoad() {
-
-    // TODO: implement caching so that the list is not re-fetched every time when re-entering the page
 
     this.imageList = [];
     this.buildImageList();
@@ -49,8 +48,8 @@ export class ImgListPage {
 
     let dlImg;
 
-    const userId = Number(localStorage.getItem('user_id')) || 0; // should exist since we came here from login / register
-    console.log("user_id: " + userId);
+    // should exist since we came here from login / register
+    const userId = Number(localStorage.getItem('user_id')) || 0;
 
     this.imgProvider.getImagesByUserId(userId)
     .subscribe(imgs => {
@@ -70,6 +69,10 @@ export class ImgListPage {
           imgs[j]['user_id'], imgs[j]['file_id'], imgs[j]['thumbnails']);
           this.imageList[i] = dlImg;
         }
+      } else {
+
+        // if there are no images, display a msg about uploading a new one
+        this.noImages = true;
       }
     }); // end subscribe()
   } // end buildImageList()
@@ -102,8 +105,6 @@ export class ImgListPage {
       this.imgProvider.uploadImage(formData)
       .subscribe(res => {
 
-        console.log('Upload response: ' + JSON.stringify(res));
-
         this.imgProvider.getImageByImageId(res['file_id'])
         .subscribe(img => {
 
@@ -112,15 +113,17 @@ export class ImgListPage {
 
           const delay = 2000; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
           // NOTE: the delay would ideally depend on the size of the image / length of the upload process
+          // 2000 is unacceptable in a real app, but I need to be sure that it works...
 
           setTimeout(function() {
 
             storedThis.imageList.unshift(dlImg); // add it as the first element of the array
             storedThis.lastUploadDate = new Date(dlImg.title); // update the upload date (so we can't add a new image on the same day)
+            storedThis.noImages = false;
           }, delay);
-        });
+        }); // end inner subscribe()
       },
-      (error: HttpErrorResponse) => console.log(error.error.message));
+      (error: HttpErrorResponse) => console.log(error.error.message)); // end outer subscribe()
     } // end if-else
   } // end upload()
 
