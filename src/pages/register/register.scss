@@ -4,4 +4,14 @@ page-register {
     border: 1px solid color($colors, danger);
   }
 
+  .fixed-content {
+
+    background-color: color($colors, dark);
+  }
+
+  .item-input {
+
+    margin-top: 1rem;
+  }
+
 }
