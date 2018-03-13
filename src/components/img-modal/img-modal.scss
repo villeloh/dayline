@@ -9,12 +9,25 @@ img-modal {
 
     padding: 2rem;
     height: fit-content;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(170, 105, 21, 0.8);
   }
 
   .deleteButton {
 
     float: right;
+  }
+
+  .modalImgDiv {
+
+    padding: 1rem;
+    background-color: black;
+  }
+
+  .modalDesc {
+
+    background-color: color($colors, light);
+    border: 1px solid rgb(223, 111, 7);
+    padding: 0.7rem;
   }
 
 }

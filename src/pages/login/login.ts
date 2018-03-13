@@ -8,6 +8,10 @@ import { Component } from "@angular/core";
 import { IonicPage, NavController, Events,  ToastController } from "ionic-angular";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
+/**
+ * Login form for the app.
+ */
+
 @IonicPage()
 @Component({
   selector: "page-login",
@@ -46,8 +50,8 @@ export class LoginPage {
 
       this.userProvider.loginUser(user).subscribe(
         res => {
+
           localStorage.setItem("token", res["token"]);
-          console.log('token: ' + localStorage.getItem('token') );
 
           this.userProvider.getUserInfo()
           .subscribe(userInfo => {

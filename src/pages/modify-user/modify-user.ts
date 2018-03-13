@@ -10,9 +10,7 @@ import { HttpErrorResponse } from "@angular/common/http/src/response";
 import { UpperCasePipe } from '@angular/common';
 
 /**
- * Page for modifying user info. It being a page is not really ideal
- * (could just be a modal instead), but due to the way
- * that navigation works, I chose to do it this way.
+ * Page for modifying user info.
  */
 
 @IonicPage()
@@ -86,9 +84,10 @@ export class ModifyUserPage {
         // thus there's no need to check specifically for that with the userNameFree() method...
         // I tried to do that earlier and it resulted in a terrible mess. hopefully this will
         // work just fine...
-        console.log('Userdata update error: ' + error.error.message);
-
         Utils.toast(this.toastCtrl, 'Username taken; please choose another one');
+
+        // NOTE #2: the reason for the intermittent use of Toasts vs. notifying html elements
+        // is simply lack of time toward the end of the project.
 
       }); // end subscribe()
     } // end if

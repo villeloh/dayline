@@ -4,6 +4,20 @@ image-box {
 
     padding: 0.5rem;
     background-color: color($colors, middle);
+    border: 0.4rem solid rgb(175, 114, 56);
+  }
+
+  .imageBoxDesc {
+
+    background-color: color($colors, light);
+    color: black;
+    padding: 0.3rem;
+  }
+
+  .imageUploadTime {
+
+    color: black;
+    padding: 0.3rem;
   }
 
 }

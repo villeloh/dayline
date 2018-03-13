@@ -26,14 +26,4 @@ export class DlImage {
     this.thumbnails = thumbnails;
   } // end constructor()
 
-  alterDlImg(stat: string, newValue: string) {
-
-    // only titles and descriptions will need to be altered
-    if (stat === 'title' || stat === 'description') {
-      this[stat] = newValue;
-    } else {
-      console.log('invalid stat while altering dlImage!');
-    }
-  } // end alterDlImg()
-
 } // end class

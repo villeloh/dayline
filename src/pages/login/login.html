@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content padding>
+
   <form #loginFormId [formGroup] = "loginForm" class="loginForm" (submit)="login(this.user)">
     <ion-item>
       <ion-label floating>Username</ion-label>
@@ -19,4 +20,5 @@
     </ion-item>
     <button class="loginSubmit" ion-button type="submit">Login</button>
   </form>
+
 </ion-content>

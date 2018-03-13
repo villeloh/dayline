@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content padding>
+
   <ion-item>
     <p>Logged in as {{this.usernameForPlaceholder | uppercase}}</p>
 </ion-item>
@@ -31,4 +32,5 @@
     <button class="modifyUserCancel" ion-button type="button" (click)="exit()">Exit Without Saving</button>
   </form>
   <p *ngIf="submitAttempt" style="color: #ea6153;">Please enter at least one valid value.</p>
+
 </ion-content>

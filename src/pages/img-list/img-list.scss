@@ -7,7 +7,34 @@ page-img-list {
 
   #reminderItem {
 
+    color: color($colors, light);
+  }
 
+  #imgList {
+
+    background-color: color($colors, dark);
+    margin-top: 2rem;
+
+    ion-item {
+
+      background-color: color($colors, dark);
+    }
+  }
+
+  .listContainer {
+
+    background-color: color($colors, dark);
+  }
+
+  .scroll-content {
+
+    background-color: color($colors, dark);
+  }
+
+  form {
+
+    padding: 2rem;
+    background-color: color($colors, light);
   }
 
 }

@@ -9,6 +9,12 @@ import { IonicPage, NavController, NavParams, ModalController, ToastController }
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ImgModalComponent } from '../../components/img-modal/img-modal';
 
+/**
+ * Main image list page; the 'core' of the app.
+ * You can add and remove images and edit their
+ * description from here.
+ */
+
 @IonicPage()
 @Component({
   selector: 'page-img-list',
@@ -58,7 +64,6 @@ export class ImgListPage {
 
         // I'm using the title field to store the upload date... it's non-ideal, but fast & easy
         this.lastUploadDate = new Date(imgs[imgs.length-1]['title']);
-        console.log('last upload date: ' + imgs[imgs.length-1]['title']);
 
         // to make the newer images appear on top, we must add the images in reverse order
         let j = 0;
@@ -113,7 +118,7 @@ export class ImgListPage {
 
           const delay = 2000; // the delay is needed for the image to be properly 'set up' on the backend before displaying it
           // NOTE: the delay would ideally depend on the size of the image / length of the upload process
-          // 2000 is unacceptable in a real app, but I need to be sure that it works...
+          // 2 s is unacceptable in a real app, but I need to be sure that it works...
 
           setTimeout(function() {
 

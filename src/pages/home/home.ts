@@ -8,6 +8,11 @@ import { Component } from '@angular/core';
 import { NavController, Events, ToastController } from 'ionic-angular';
 import { Page } from 'ionic-angular/navigation/nav-util';
 
+/**
+ * Starting page of the app. Contains only the Login and Register buttons,
+ * plus the app logo.
+ */
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -22,8 +27,8 @@ export class HomePage {
     public navCtrl: NavController,
     public userProvider: UserProvider,
     public events: Events,
-    public toastCtrl: ToastController) {
-  }
+    public toastCtrl: ToastController
+  ) {}
 
   ionViewDidLoad() {
 
@@ -38,7 +43,7 @@ export class HomePage {
 
       console.log(error.error.message);
       this.events.publish('loggedIn', false); // used to set the sidemenu items correctly
-      Utils.toast(this.toastCtrl, Utils.WELCOME_MSG, 'bottom');
+      Utils.toast(this.toastCtrl, Utils.WELCOME_MSG, 'bottom', 2000);
     });
   } // end ionViewDidLoad()
 

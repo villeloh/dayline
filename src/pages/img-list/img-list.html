@@ -18,16 +18,18 @@
     <input type="submit" value="Upload">
   </form>
 
-  <ion-list #imgHolder>
-    <ion-item *ngFor = "let dlImage of this.imageList">
-      <image-box (click)="presentModal(dlImage)" [img] = "dlImage"></image-box>
-    </ion-item>
-  </ion-list>
+  <div class="listContainer">
+    <ion-list #imgHolder id="imgList">
+      <ion-item *ngFor = "let dlImage of this.imageList">
+        <image-box (click)="presentModal(dlImage)" [img] = "dlImage"></image-box>
+      </ion-item>
+    </ion-list>
 
-  <ion-item id="reminderItem" *ngIf = "this.noImages">
-    <p>You have no images on your Dayline!<br>
-      Cherish the day and upload a new image!<br>
-      ^^</p>
-  </ion-item>
+    <ion-item id="reminderItem" *ngIf = "this.noImages">
+      <p>You have no images on your Dayline!<br>
+        Cherish the day and upload a new image!<br>
+        ^^</p>
+    </ion-item>
+  </div>
 
 </ion-content>

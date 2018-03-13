@@ -58,7 +58,7 @@ export class RegisterPage {
       return;
     }
 
-    // four subscribes is a 'bit' much... TODO: clear this up somehow -.-
+    // four subscribes is a 'bit' much...
     // logging in the user gets the token, which is needed for getting id,
     // so the mess seems unavoidable...
 
@@ -76,7 +76,6 @@ export class RegisterPage {
         this.userProvider.registerUser(user)
         .subscribe(res => {
 
-          console.log('Register response: ' + JSON.stringify(res));
           this.userProvider.loginUser(user)
           .subscribe(res => {
 
@@ -88,14 +87,19 @@ export class RegisterPage {
               localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
               this.navCtrl.setRoot(this.imgListPage);
               this.events.publish('loggedIn', true); // duplicate code with login.ts... not sure how to combine them atm
-            });
+            }); // end innermost (4th) subscribe()
           },
-          (error: HttpErrorResponse) => console.log("error registering: " + error.error.message));
-        }
+          (error: HttpErrorResponse) =>
+
+            console.log("error registering: " + error.error.message)
+        )} // end 3rd subscribe()
         ,
-        (error: HttpErrorResponse) => console.log("outer error registering: " + error.error.message)); // end register-subscribe()
+        (error: HttpErrorResponse) =>
+
+          console.log("outer error registering: " + error.error.message)
+        ); // end 2nd (register) subscribe()
       } // end if-else
-    }); // end outer subscribe()
+    }); // end 1st (outermost) subscribe()
   } // end register()
 
 } // end class

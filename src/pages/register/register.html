@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content padding>
+
   <form #registerFormId class="registerForm" [formGroup] = "registerForm" (submit)="register(this.user)">
     <ion-item>
       <ion-label floating>Username</ion-label>
@@ -27,4 +28,5 @@
     <button class="regSubmit" ion-button type="submit">Register</button>
   </form>
   <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+
 </ion-content>
